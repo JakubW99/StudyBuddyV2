@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.EF.Entities
 {
-    internal class ProjectEntity
+    public class ProjectEntity
     {
         public int Id { get; set; }
         public string Topic { get; set; }
