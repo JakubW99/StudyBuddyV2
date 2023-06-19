@@ -11,8 +11,9 @@ namespace ApplicationCore.Inferfaces
     public interface ITeamService
     {
         IEnumerable<Team?> FindAllTeams();
-        Team? FindById(int id);
+        Team? FindTeamById(int id);
         Team AddTeam(Team team);
+        void DeleteTeam(int id);
 
     }
 }

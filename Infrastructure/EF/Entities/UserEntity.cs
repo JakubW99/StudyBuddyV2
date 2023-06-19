@@ -6,5 +6,9 @@ namespace Infrastructure.EF.Entities
 {
     public class UserEntity : IdentityUser<int>
     {
+        public UserEntity()
+        {
+
+        }
     }
 }

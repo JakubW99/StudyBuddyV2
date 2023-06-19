@@ -9,8 +9,11 @@ namespace ApplicationCore.Inferfaces
 {
     public interface IProjectService
     {
-        IEnumerable<Project?> FindAllTeams();
-        Project? FindById(int id);
+        IEnumerable<Project?> FindAllProjects();
+   
+        Project? FindProjectById(int id);
         Project AddProject(Project project);
+         void DeleteProject(int id);
+      
     }
 }

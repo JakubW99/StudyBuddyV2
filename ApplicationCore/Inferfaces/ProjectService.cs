@@ -11,21 +11,29 @@ namespace ApplicationCore.Inferfaces
     internal class ProjectService : IProjectService
     {
         private IGenericRepository<Project,int> _repository;
+      
+        //private IGenericRepository<ProgrammingLanguage, int> _languageRepository;
         public ProjectService(IGenericRepository<Project,int> repository)
         { 
             _repository = repository;
+         
         }
         public Project AddProject(Project project)
         {
             return _repository.Add(project);
         }
 
-        public IEnumerable<Project?> FindAllTeams()
+        public void DeleteProject(int id)
         {
-            return _repository.FindAll();
+            _repository.RemoveById(id);
         }
 
-        public Project? FindById(int id)
+        public IEnumerable<Project?> FindAllProjects()
+        {
+            return _repository.FindAll().ToList();
+        }
+
+        public Project? FindProjectById(int id)
         {
             return _repository.FindById(id);
         }

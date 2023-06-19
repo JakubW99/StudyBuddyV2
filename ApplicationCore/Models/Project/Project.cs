@@ -17,5 +17,14 @@ namespace ApplicationCore.Models.Project
         public IEnumerable<ProgrammingLanguage> Languages { get; set; }
         public DateTime PlannedEndDate { get; set; }
         public DateTime DeadlineDate { get; set; }
+        public Project(int id, string topic, Team team, IEnumerable<ProgrammingLanguage> languages, DateTime plannedEndDate, DateTime deadlineDate)
+        {
+            Id = id;
+            Topic = topic;
+            Team = team;
+            Languages = languages;
+            PlannedEndDate = plannedEndDate;
+            DeadlineDate = deadlineDate;
+        }
     }
 }

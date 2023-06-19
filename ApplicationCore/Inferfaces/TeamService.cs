@@ -22,12 +22,17 @@ namespace ApplicationCore.Inferfaces
             return _repository.Add(team);
         }
 
+        public void DeleteTeam(int id)
+        {
+           _repository.RemoveById(id);
+        }
+
         public IEnumerable<Team?> FindAllTeams()
         {
             return _repository.FindAll();
         }
 
-        public Team? FindById(int id)
+        public Team? FindTeamById(int id)
         {
           return _repository.FindById(id);
         }

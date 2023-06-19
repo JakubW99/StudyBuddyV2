@@ -13,7 +13,7 @@ namespace Infrastructure.EF.Entities
 
         public TeamEntity Team { get; set; }
 
-        public ISet<ProgrammingLanguageEntity> Languages { get; set; }
+        public IEnumerable<ProgrammingLanguageEntity> Languages { get; set; }
         public DateTime PlannedEndDate { get; set; }
         public DateTime DeadlineDate { get; set; }
     }

@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
         public UserEntity Leader { get; set; }
-        public ISet<UserEntity> Members { get; set; }
+        public IEnumerable<UserEntity> Members { get; set; }
     }
 }
