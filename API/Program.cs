@@ -1,8 +1,10 @@
 
 using API.Configuration;
+using ApplicationCore.Inferfaces;
 using ApplicationCore.Models;
 using Infrastructure;
 using Infrastructure.EF.Entities;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +31,9 @@ namespace API
             builder.Services.ConfigureJWT(new JwtSettings(builder.Configuration));
             builder.Services.ConfigureCors();
             builder.Services.AddEndpointsApiExplorer();
-         
+            builder.Services.AddScoped<IProjectService, ProjectServiceEF>();
+            builder.Services.AddScoped<ITeamService, TeamServiceEF>();
+
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

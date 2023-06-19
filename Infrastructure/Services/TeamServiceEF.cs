@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    internal class TeamServiceEF : ITeamService
+    public class TeamServiceEF : ITeamService
     {
 
         private StudyBuddyDbContext _context;
