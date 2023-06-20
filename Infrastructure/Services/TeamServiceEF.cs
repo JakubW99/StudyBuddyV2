@@ -18,10 +18,27 @@ namespace Infrastructure.Services
         {
             _context = context;
         }
+
+        public void AddMemberToTeam(int userId, int teamId)
+        {
+            var user = _context.Users.FirstOrDefault(x=> x.Id == userId);
+           var team =  _context.Teams.FirstOrDefault(x => x.Id == teamId);
+            team.Members.Append(user);
+        }
+
         public Team AddTeam(Team team)
         {
            _context.Add(Mappers.Mapper.FromTeamToEntity(team));
             return team;
+        }
+
+        public void DeleteMemberFromTeam(int userId, int teamId)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var team = _context.Teams.FirstOrDefault(x => x.Id == teamId);
+         var members = team.Members.ToList();
+            members.Remove(user);
+            
         }
 
         public void DeleteTeam(int id)

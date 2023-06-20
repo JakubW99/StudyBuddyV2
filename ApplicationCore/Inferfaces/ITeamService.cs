@@ -14,6 +14,7 @@ namespace ApplicationCore.Inferfaces
         Team? FindTeamById(int id);
         Team AddTeam(Team team);
         void DeleteTeam(int id);
-
+        void AddMemberToTeam(int userId, int teamId);
+        void DeleteMemberFromTeam(int userId, int teamId);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-API.Authentication
+
 namespace API.Authentication
 {
     public class LoginModel
