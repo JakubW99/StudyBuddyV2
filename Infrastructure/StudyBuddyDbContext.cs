@@ -20,12 +20,12 @@ namespace Infrastructure
         public DbSet<ProjectEntity> Projects { get; set; }
         public DbSet<TeamEntity> Teams { get; set; }
         public DbSet<ProgrammingLanguageEntity> ProgrammingLanguages { get; set; }
-
+      
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-               "DATA SOURCE=DESKTOP-F09P8H4\\SQLEXPRESS;DATABASE=StudyBuddyDb;Integrated Security=true;TrustServerCertificate=True");
+               "DATA SOURCE=DESKTOP-F09P8H4\\SQLEXPRESS;DATABASE=SDb;Integrated Security=true;TrustServerCertificate=True");
         }
 
     }

@@ -22,6 +22,30 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Infrastructure.EF.Entities.MemberEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("TeamEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamEntityId");
+
+                    b.ToTable("MemberEntity");
+                });
+
             modelBuilder.Entity("Infrastructure.EF.Entities.ProgrammingLanguageEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -89,8 +113,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeaderId");
-
                     b.ToTable("Teams");
                 });
 
@@ -142,9 +164,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TeamEntityId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -161,8 +180,6 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("TeamEntityId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -300,6 +317,13 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Infrastructure.EF.Entities.MemberEntity", b =>
+                {
+                    b.HasOne("Infrastructure.EF.Entities.TeamEntity", null)
+                        .WithMany("Members")
+                        .HasForeignKey("TeamEntityId");
+                });
+
             modelBuilder.Entity("Infrastructure.EF.Entities.ProgrammingLanguageEntity", b =>
                 {
                     b.HasOne("Infrastructure.EF.Entities.ProjectEntity", null)
@@ -316,24 +340,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("Infrastructure.EF.Entities.TeamEntity", b =>
-                {
-                    b.HasOne("Infrastructure.EF.Entities.UserEntity", "Leader")
-                        .WithMany()
-                        .HasForeignKey("LeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Leader");
-                });
-
-            modelBuilder.Entity("Infrastructure.EF.Entities.UserEntity", b =>
-                {
-                    b.HasOne("Infrastructure.EF.Entities.TeamEntity", null)
-                        .WithMany("Members")
-                        .HasForeignKey("TeamEntityId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

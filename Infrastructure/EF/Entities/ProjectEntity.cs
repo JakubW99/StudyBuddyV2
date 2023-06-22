@@ -16,5 +16,18 @@ namespace Infrastructure.EF.Entities
         public IEnumerable<ProgrammingLanguageEntity> Languages { get; set; }
         public DateTime PlannedEndDate { get; set; }
         public DateTime DeadlineDate { get; set; }
+        public ProjectEntity()
+        {
+
+        }
+        public ProjectEntity(int id, string topic, TeamEntity team, IEnumerable<ProgrammingLanguageEntity> languages, DateTime plannedEndDate, DateTime deadlineDate)
+        {
+            Id = id;
+            Topic = topic;
+            Team = team;
+            Languages = languages;
+            PlannedEndDate = plannedEndDate;
+            DeadlineDate = deadlineDate;
+        }
     }
 }

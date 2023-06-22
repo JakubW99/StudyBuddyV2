@@ -21,23 +21,32 @@ namespace Infrastructure.Services
 
         public void AddMemberToTeam(int userId, int teamId)
         {
-            var user = _context.Users.FirstOrDefault(x=> x.Id == userId);
-           var team =  _context.Teams.FirstOrDefault(x => x.Id == teamId);
-            team.Members.Append(user);
+            var member = new MemberEntity() {Id = 1, UserId = userId, TeamId = teamId };
+            var teamMembers = _context.Teams.Where(x => x.Id == teamId);
+           //_context.Member.Add(member);
+            _context.SaveChangesAsync();
         }
 
         public Team AddTeam(Team team)
         {
-           _context.Add(Mappers.Mapper.FromTeamToEntity(team));
+            var teamEntity = new TeamEntity()
+            {
+                Id = team.Id,
+                Name = team.Name,
+                LeaderId = team.LeaderId,
+                Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, TeamId= m.TeamId, UserId = m.UserId}).ToList()
+            };
+            _context.Add(teamEntity);
+            _context.SaveChangesAsync();
             return team;
         }
 
         public void DeleteMemberFromTeam(int userId, int teamId)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            
             var team = _context.Teams.FirstOrDefault(x => x.Id == teamId);
          var members = team.Members.ToList();
-            members.Remove(user);
+            members.RemoveAt(userId);
             
         }
 
@@ -52,7 +61,7 @@ namespace Infrastructure.Services
         {
             return _context.Teams.AsNoTracking()
                  .Include(m => m.Members)
-                 .Include(l => l.Leader)
+               
                  .Select(Mappers.Mapper.FromEntityToTeam)
                  .ToList();
         }

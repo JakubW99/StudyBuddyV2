@@ -35,7 +35,7 @@ namespace ApplicationCore.Inferfaces
         public void DeleteMemberFromTeam(int userId, int teamId)
         {
             var team = _repository.FindById(teamId);
-            var userToDelete = team.Members.FirstOrDefault(x => x.Id == userId);
+            var userToDelete = team.Members.ElementAt(userId);
             if (userToDelete != null) 
             {
               //
@@ -54,7 +54,10 @@ namespace ApplicationCore.Inferfaces
 
         public Team? FindTeamById(int id)
         {
-          return _repository.FindById(id);
+            var team = _repository.FindById(id);
+            if (team != null)
+                return team;
+            else return null;
         }
     }
 }

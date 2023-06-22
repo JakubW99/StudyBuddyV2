@@ -13,14 +13,8 @@ namespace ApplicationCore.Models.Project
         public int Id { get; set; }
 
         public string Name { get; set; }
-        public User Leader { get; set; }
-        public IEnumerable<User> Members { get; set; }
-        public Team(int id, string name, User leader, IEnumerable<User> members)
-        {
-            Id = id;
-            Name = name;
-            Leader = leader;
-            Members = members;
-        }
+        public int LeaderId { get; set; }
+        public IEnumerable<Member> Members { get; set; }
+       
     }
 }

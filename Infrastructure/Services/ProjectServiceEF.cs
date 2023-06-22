@@ -27,15 +27,12 @@ namespace Infrastructure.Services
             entity.Team = new TeamEntity() {
                 Id = project.Team.Id,
                 Name = project.Team.Name,
-                Leader = new UserEntity()
-                {
-                    UserName = project.Team.Leader.Username,
-                    Id = project.Team.Leader.Id,
-                },
-               Members = new List<UserEntity>()
+                LeaderId= project.Team.LeaderId,
+                Members = project.Team.Members.Select(m => new MemberEntity() { Id = m.Id , TeamId = m.TeamId , UserId= m.UserId}).ToList()
               
             };
             _context.Projects.Add(entity);
+            _context.SaveChangesAsync();
             return project;
         }
 

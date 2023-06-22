@@ -20,27 +20,12 @@ namespace Infrastructure.Mappers
             {
                 Id = team.Id,
                 Name = team.Name,
-                Leader = new UserEntity()
-                {
-                    Id = team.Leader.Id,
-                    UserName = team.Leader.Username
-                },
-                Members = FromMembersToEntity(team.Members)
+                LeaderId = team.LeaderId,
+                Members = team.Members.Select(x => new MemberEntity() { Id = x.Id, UserId= x.UserId , TeamId = x.TeamId})
             };
         }
 
-        public static IEnumerable<UserEntity> FromMembersToEntity(IEnumerable<User> members)
-        {
-            var mem = new List<UserEntity>();
-            var usr = new UserEntity();
-            foreach(var user in members)
-            {
-                usr.Id = user.Id;
-                usr.UserName = user.Username;
-                mem.Add(usr);
-            }
-            return mem;
-        }
+     
         public static User FromEntityToUser(UserEntity entity)
         {
             var user = new User();
@@ -48,23 +33,16 @@ namespace Infrastructure.Mappers
             user.Username = entity.UserName;
             return user;
         }
-        public static IEnumerable<User> FromEntityToMembers(IEnumerable<UserEntity> entities)
-        {
-            var users = new List<User>();
-            foreach (var entity in entities)
-            {
-                users.Add(FromEntityToUser(entity));
-            }
-            return users;
-        }
+      
         public static Team FromEntityToTeam(TeamEntity entity)
         {
-            return new Team(
-                entity.Id,
-                entity.Name,
-                FromEntityToUser(entity.Leader),
-               FromEntityToMembers(entity.Members)
-                );
+            return new Team()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                LeaderId = entity.LeaderId,
+               Members = entity.Members.Select(x=> new Member() { Id = x.Id, TeamId = x.TeamId, UserId = x.UserId})
+                };
         }
         public static IEnumerable<ProgrammingLanguage> FromEntityToProgrammingLanguages(IEnumerable<ProgrammingLanguageEntity> entities)
         {
@@ -90,10 +68,6 @@ namespace Infrastructure.Mappers
                   FromEntityToProgrammingLanguages(entity.Languages),
             entity.PlannedEndDate,
                 entity.DeadlineDate
-
-
-
-
                 );
         }
     }
