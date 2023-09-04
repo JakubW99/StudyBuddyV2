@@ -42,7 +42,6 @@ namespace API.Controllers
 
             var team = new Team()
             {
-                Id = teamDto.Id,
                 Name = teamDto.Name,
                 LeaderId = teamDto.LeaderId,
                 Members = new List<Member>()

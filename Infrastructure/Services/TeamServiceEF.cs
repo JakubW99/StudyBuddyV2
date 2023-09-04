@@ -37,7 +37,7 @@ namespace Infrastructure.Services
                 Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, TeamId= m.TeamId, UserId = m.UserId}).ToList()
             };
             _context.Teams.Add(teamEntity);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
             return team;
         }
 
@@ -47,7 +47,8 @@ namespace Infrastructure.Services
             var team = _context.Teams.FirstOrDefault(x => x.Id == teamId);
          var members = team.Members.ToList();
             members.RemoveAt(userId);
-            
+            _context.SaveChanges();
+
         }
 
         public void DeleteTeam(int id)
@@ -55,6 +56,7 @@ namespace Infrastructure.Services
             var team = _context.Teams.Find(id);
             if (team != null)
                 _context.Remove(team);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Team?> FindAllTeams()
