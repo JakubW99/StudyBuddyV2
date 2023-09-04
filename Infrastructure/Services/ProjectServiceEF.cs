@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Inferfaces;
 using ApplicationCore.Models.Project;
 using Infrastructure.EF.Entities;
+using Infrastructure.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Infrastructure.Services
               
             };
             _context.Projects.Add(entity);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
             return project;
         }
 
@@ -41,6 +42,7 @@ namespace Infrastructure.Services
            var projectToDelete =  _context.Projects.Find(id);
             if(projectToDelete != null)
             _context.Projects.Remove(projectToDelete);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Project?> FindAllProjects()
@@ -48,8 +50,9 @@ namespace Infrastructure.Services
             return _context.Projects
                 .AsNoTracking()
                 .Include(t => t.Team)
+                .ThenInclude(x=>x.Members)
                 .Include(p => p.Languages)
-                .Select(Mappers.Mapper.FromEntityToProject)
+                .Select(x=>Mapper.FromEntityToProject(x))
                 .ToList();
            
         }

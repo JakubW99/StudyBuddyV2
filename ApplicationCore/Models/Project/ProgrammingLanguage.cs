@@ -10,10 +10,10 @@ namespace ApplicationCore.Models.Project
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ProgrammingLanguage(int id, string name)
+        public ProgrammingLanguage( string name)
         {
-            Id = id;
             Name = name;
+            
         }
     }
 }

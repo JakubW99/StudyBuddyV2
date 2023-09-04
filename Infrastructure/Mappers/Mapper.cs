@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using API.Dto;
+using ApplicationCore.Models;
 using ApplicationCore.Models.Project;
 using Infrastructure.EF.Entities;
 using System;
@@ -8,6 +9,8 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+
+
 
 namespace Infrastructure.Mappers
 {
@@ -50,7 +53,6 @@ namespace Infrastructure.Mappers
             foreach(var language in entities)
             {
                 languages.Add(new ProgrammingLanguage(
-                     language.Id,
                      language.Name
                      ));
             }
@@ -70,5 +72,18 @@ namespace Infrastructure.Mappers
                 entity.DeadlineDate
                 );
         }
+        public static ProgrammingLanguageEntity FromDtoToLanguage(ProgrammingLanguageDto dto)
+        {
+            var programminglanguage = new ProgrammingLanguageEntity();
+
+            programminglanguage.Name = dto.Name;
+
+
+            return programminglanguage;
+        
+        }
+
+
+
     }
 }

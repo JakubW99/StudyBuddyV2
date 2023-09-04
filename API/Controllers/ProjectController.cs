@@ -37,21 +37,18 @@ namespace API.Controllers
         }
        // [Authorize]
         [HttpPost]
-        public void AddProject([FromBody] Project project) 
+        public void AddProject([FromBody] ProjectDto project) 
         {
             var entity = new ProjectEntity();
-            entity.Id = project.Id;
+            var team = _context.Teams.Find(project.TeamId);
+            entity.Id = 0;
+           entity.Languages = project.Languages.Select(x=>Mapper.FromDtoToLanguage(x)).ToList();
             entity.PlannedEndDate = project.PlannedEndDate;
             entity.DeadlineDate = project.DeadlineDate;
-            entity.Team = new TeamEntity()
-            {
-                Id = project.Team.Id,
-                Name = project.Team.Name,
-                LeaderId = project.Team.LeaderId,
-                Members = project.Team.Members.Select(m => new MemberEntity() { Id = m.Id, TeamId = m.TeamId, UserId = m.UserId }).ToList()
-
-            };
+            entity.Team = team;
+            entity.Topic = project.Topic;
             _context.Projects.Add(entity);
+            _context.SaveChanges();
         }
         [Authorize]
         [HttpDelete]
