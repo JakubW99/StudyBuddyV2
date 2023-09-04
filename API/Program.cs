@@ -86,7 +86,7 @@ namespace API
 
 
                 app.MapControllers();
-
+                Seeder.Seed(app);
                 app.Run();
             }
         }

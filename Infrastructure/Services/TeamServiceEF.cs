@@ -36,7 +36,7 @@ namespace Infrastructure.Services
                 LeaderId = team.LeaderId,
                 Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, TeamId= m.TeamId, UserId = m.UserId}).ToList()
             };
-            _context.Add(teamEntity);
+            _context.Teams.Add(teamEntity);
             _context.SaveChangesAsync();
             return team;
         }
