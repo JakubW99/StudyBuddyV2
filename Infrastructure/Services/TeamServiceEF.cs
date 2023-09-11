@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Inferfaces;
 using ApplicationCore.Models.Project;
 using Infrastructure.EF.Entities;
+using Infrastructure.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,14 @@ namespace Infrastructure.Services
 
         public void AddMemberToTeam(int userId, int teamId)
         {
-            var member = new MemberEntity() {Id = 1, UserId = userId, TeamId = teamId };
-            var teamMembers = _context.Teams.Where(x => x.Id == teamId);
-           //_context.Member.Add(member);
-            _context.SaveChangesAsync();
+            var member = new MemberEntity() {Id = 0, UserId = userId };
+            //var team = _context.Teams.Where(x => x.Id == teamId).FirstOrDefault();
+            _context.Members.Add(member);
+            _context.SaveChanges();
+           
+             //_context.Entry(team).State = EntityState.Modified;
+            
+           
         }
 
         public Team AddTeam(Team team)
@@ -34,13 +39,24 @@ namespace Infrastructure.Services
                 Id = team.Id,
                 Name = team.Name,
                 LeaderId = team.LeaderId,
-                Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, TeamId= m.TeamId, UserId = m.UserId}).ToList()
+                Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, UserId = m.UserId}).ToList()
             };
             _context.Teams.Add(teamEntity);
             _context.SaveChanges();
             return team;
         }
+        public Team UpdateTeam(Team team, int id)
+        {
+            var findTeam= _context.Teams.FirstOrDefault(m => m.Id == id);
 
+       
+            findTeam.Name = team.Name;
+            findTeam.LeaderId = team.LeaderId;
+            findTeam.Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, UserId = m.UserId }).ToList();
+           
+            _context.SaveChanges();
+            return team;
+        }
         public void DeleteMemberFromTeam(int userId, int teamId)
         {
             
@@ -63,7 +79,7 @@ namespace Infrastructure.Services
         {
             return _context.Teams.AsNoTracking()
                  .Include(m => m.Members)
-               
+                 
                  .Select(Mappers.Mapper.FromEntityToTeam)
                  .ToList();
         }
@@ -73,5 +89,7 @@ namespace Infrastructure.Services
             var team = _context.Teams.Find(id);
             return Mappers.Mapper.FromEntityToTeam(team);
         }
+       
+
     }
 }

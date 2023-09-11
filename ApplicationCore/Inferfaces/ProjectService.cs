@@ -37,5 +37,17 @@ namespace ApplicationCore.Inferfaces
         {
             return _repository.FindById(id);
         }
+        public Project UpdateProject(Project project, int id)
+        {
+            var findProject =_repository.FindById(id);
+            findProject.Team = project.Team;
+            findProject.Topic = project.Topic;
+            findProject.DeadlineDate = project.DeadlineDate;
+            findProject.PlannedEndDate = project.PlannedEndDate;
+            findProject.Languages = project.Languages;
+            return findProject;
+           
+
+        }
     }
 }

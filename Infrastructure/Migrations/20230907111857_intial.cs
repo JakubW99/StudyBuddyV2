@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class intial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -173,20 +173,19 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MemberEntity",
+                name: "Members",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    TeamId = table.Column<int>(type: "int", nullable: false),
                     TeamEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MemberEntity", x => x.Id);
+                    table.PrimaryKey("PK_Members", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MemberEntity_Teams_TeamEntityId",
+                        name: "FK_Members_Teams_TeamEntityId",
                         column: x => x.TeamEntityId,
                         principalTable: "Teams",
                         principalColumn: "Id");
@@ -273,8 +272,8 @@ namespace Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MemberEntity_TeamEntityId",
-                table: "MemberEntity",
+                name: "IX_Members_TeamEntityId",
+                table: "Members",
                 column: "TeamEntityId");
 
             migrationBuilder.CreateIndex(
@@ -307,7 +306,7 @@ namespace Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "MemberEntity");
+                name: "Members");
 
             migrationBuilder.DropTable(
                 name: "ProgrammingLanguages");

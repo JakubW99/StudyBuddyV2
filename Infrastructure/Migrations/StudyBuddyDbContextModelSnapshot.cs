@@ -33,9 +33,6 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("TeamEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -43,7 +40,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamEntityId");
 
-                    b.ToTable("MemberEntity");
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("Infrastructure.EF.Entities.ProgrammingLanguageEntity", b =>

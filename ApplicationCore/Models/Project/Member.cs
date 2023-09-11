@@ -11,6 +11,10 @@ namespace ApplicationCore.Models.Project
         public int Id { get; set; }
         public int UserId { get; set; }
 
-        public int TeamId { get; set; }
+        public Member(int id, int userId)
+        {
+            Id = id;
+            UserId = userId;
+        }
     }
 }

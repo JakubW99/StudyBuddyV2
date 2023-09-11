@@ -57,5 +57,12 @@ namespace API.Controllers
         {
             _service.DeleteProject(id);
         }
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult UpdateProject(Project project,[FromRoute] int id)
+        {
+          _service.UpdateProject(project, id);
+            return Created("", project);
+        }
     }
 }

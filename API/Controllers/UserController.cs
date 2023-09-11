@@ -35,7 +35,10 @@ namespace API.Controllers
         public UserDto GetUserById([FromRoute]  int id) 
         {
            var user =  _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user != null)
                 return new UserDto(user.Id, user.UserName, user.Email);
+            else return null;
+
         }
     }
     

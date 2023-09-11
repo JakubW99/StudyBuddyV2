@@ -24,7 +24,7 @@ namespace Infrastructure.Mappers
                 Id = team.Id,
                 Name = team.Name,
                 LeaderId = team.LeaderId,
-                Members = team.Members.Select(x => new MemberEntity() { Id = x.Id, UserId= x.UserId , TeamId = x.TeamId})
+                Members = team.Members.Select(x => new MemberEntity() { Id = x.Id, UserId= x.UserId})
             };
         }
 
@@ -44,8 +44,8 @@ namespace Infrastructure.Mappers
                 Id = entity.Id,
                 Name = entity.Name,
                 LeaderId = entity.LeaderId,
-               Members = entity.Members.Select(x=> new Member() { Id = x.Id, TeamId = x.TeamId, UserId = x.UserId})
-                };
+               Members = entity.Members.Select(x=> new Member(x.Id,x.UserId))
+             };
         }
         public static IEnumerable<ProgrammingLanguage> FromEntityToProgrammingLanguages(IEnumerable<ProgrammingLanguageEntity> entities)
         {
@@ -72,6 +72,7 @@ namespace Infrastructure.Mappers
                 entity.DeadlineDate
                 );
         }
+        
         public static ProgrammingLanguageEntity FromDtoToLanguage(ProgrammingLanguageDto dto)
         {
             var programminglanguage = new ProgrammingLanguageEntity();

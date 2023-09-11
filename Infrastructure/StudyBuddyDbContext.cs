@@ -19,13 +19,14 @@ namespace Infrastructure
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ProjectEntity> Projects { get; set; }
         public DbSet<TeamEntity> Teams { get; set; }
+        public DbSet<MemberEntity> Members { get; set; }
         public DbSet<ProgrammingLanguageEntity> ProgrammingLanguages { get; set; }
       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-                "Server=(localdb)\\mssqllocaldb;Database=SDb;Trusted_Connection=True;MultipleActiveResultSets=true;");
+                "DATA SOURCE=DESKTOP-F09P8H4\\SQLEXPRESS;DATABASE=Study;Integrated Security=true;TrustServerCertificate=True");
         }
 
     }

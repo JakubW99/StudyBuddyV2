@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBuddyDbContext))]
-    [Migration("20230621133921_initial")]
-    partial class initial
+    [Migration("20230907111857_intial")]
+    partial class intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,9 +36,6 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("TeamEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -46,7 +43,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamEntityId");
 
-                    b.ToTable("MemberEntity");
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("Infrastructure.EF.Entities.ProgrammingLanguageEntity", b =>

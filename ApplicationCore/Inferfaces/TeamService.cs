@@ -59,5 +59,15 @@ namespace ApplicationCore.Inferfaces
                 return team;
             else return null;
         }
+
+        public Team? UpdateTeam(Team Team,int id)
+        {
+            var findTeam = _repository.FindById(id);
+            findTeam.Id = Team.Id;
+            findTeam.Name = Team.Name;
+            findTeam.Members = Team.Members;
+            findTeam.LeaderId = Team.LeaderId;
+            return findTeam;
+        }
     }
 }

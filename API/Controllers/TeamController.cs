@@ -39,18 +39,33 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Post(TeamDto teamDto)
         {
-
+         
             var team = new Team()
             {
                 Name = teamDto.Name,
                 LeaderId = teamDto.LeaderId,
-                Members = new List<Member>()
+                Members = teamDto.Members.Select(x => new Member(0, x.UserId))
             };
             _service.AddTeam(team);
             return Created("", team);
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult Put(TeamDto teamDto, [FromRoute] int id)
+        {
+            var team = new Team()
+            {
+                Name = teamDto.Name,
+                LeaderId = teamDto.LeaderId,
+                Members = teamDto.Members.Select(x => new Member(0, x.UserId))
+            };
+            _service.UpdateTeam(team,id);
+            return Created("", team);
+        }
         [HttpDelete]
         [Route("{id}")]
+
         public void DeleteTeam(int id) 
         {
             _service.DeleteTeam(id);
@@ -63,13 +78,6 @@ namespace API.Controllers
             _service.DeleteMemberFromTeam(userId, teamId);
             return Ok();
         }
-        //[Authorize]
-        [HttpPost]
-        [Route("{teamId}/{userId}")]
-        public ActionResult AddUserToTeam([FromRoute] int teamId, [FromRoute] int userId)
-        {
-            _service.AddMemberToTeam(userId, teamId);
-            return Ok();
-        }
+      
     }
 }

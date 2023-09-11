@@ -29,7 +29,7 @@ namespace Infrastructure.Services
                 Id = project.Team.Id,
                 Name = project.Team.Name,
                 LeaderId= project.Team.LeaderId,
-                Members = project.Team.Members.Select(m => new MemberEntity() { Id = m.Id , TeamId = m.TeamId , UserId= m.UserId}).ToList()
+                Members = project.Team.Members.Select(m => new MemberEntity() { Id = m.Id , UserId= m.UserId}).ToList()
               
             };
             _context.Projects.Add(entity);
@@ -67,6 +67,27 @@ namespace Infrastructure.Services
                 .Include(p => p.Languages)
                 .FirstOrDefault(e => e.Id == id);
             return project is null ? null : Mappers.Mapper.FromEntityToProject(project);
+        }
+        public Project UpdateProject(Project project, int id)
+        {
+            var findProject = _context.Projects
+               .AsNoTracking()
+               .Include(t => t.Team)
+               .Include(p => p.Languages)
+               .FirstOrDefault(e => e.Id == id);
+            if(findProject != null)
+            {
+               var prjct = Mappers.Mapper.FromEntityToProject(findProject);
+                prjct.DeadlineDate = project.DeadlineDate;
+                prjct.Topic = project.Topic;
+                prjct.Languages = project.Languages;
+                prjct.PlannedEndDate = project.PlannedEndDate;
+                prjct.Team = project.Team;
+                _context.SaveChanges();
+                return prjct;
+            }
+            return null;
+            
         }
 
      
