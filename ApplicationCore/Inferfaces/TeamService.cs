@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Inferfaces
 {
-    public class TeamService : ITeamService
+    public class TeamService 
     {
         private IGenericRepository<Team,int> _repository;
 

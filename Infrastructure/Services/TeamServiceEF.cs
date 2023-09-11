@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Inferfaces;
+using ApplicationCore.Models;
 using ApplicationCore.Models.Project;
 using Infrastructure.EF.Entities;
 using Infrastructure.Mappers;
@@ -20,17 +21,7 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public void AddMemberToTeam(int userId, int teamId)
-        {
-            var member = new MemberEntity() {Id = 0, UserId = userId };
-            //var team = _context.Teams.Where(x => x.Id == teamId).FirstOrDefault();
-            _context.Members.Add(member);
-            _context.SaveChanges();
-           
-             //_context.Entry(team).State = EntityState.Modified;
-            
-           
-        }
+    
 
         public Team AddTeam(Team team)
         {
@@ -59,16 +50,22 @@ namespace Infrastructure.Services
         }
         public void DeleteMemberFromTeam(int userId, int teamId)
         {
-            
-            var team = _context.Teams.FirstOrDefault(x => x.Id == teamId);
-         var members = team.Members.ToList();
-            members.RemoveAt(userId);
-            _context.SaveChanges();
+            var team = _context.Teams.Include(x=>x.Members).FirstOrDefault(x => x.Id == teamId);
+            if (team == null || team.Members == null) return;
 
+            var memberToRemove = team.Members.FirstOrDefault(m => m.UserId == userId);
+            if (memberToRemove != null)
+            {
+                _context.Members.Remove(memberToRemove);
+
+                _context.SaveChanges();
+            }
         }
 
         public void DeleteTeam(int id)
         {
+            var members = _context.Members.Where(m => m.TeamEntityId == id).ToList();
+            _context.RemoveRange(members);
             var team = _context.Teams.Find(id);
             if (team != null)
                 _context.Remove(team);
@@ -89,7 +86,21 @@ namespace Infrastructure.Services
             var team = _context.Teams.Find(id);
             return Mappers.Mapper.FromEntityToTeam(team);
         }
-       
+
+        public void AddMemberToTeam(int id)
+        {
+            var team = _context.Teams.Include(x => x.Members).FirstOrDefault(x => x.Id == id);
+            if (team == null || team.Members == null) return;
+
+            var memberAdd = new MemberEntity
+            {
+                UserId = id,
+                TeamEntityId = team.Id,
+            };
+            
+            team.Members.Add(memberAdd);
+           _context.SaveChanges();
+        }
 
     }
 }

@@ -24,7 +24,8 @@ namespace Infrastructure.Mappers
                 Id = team.Id,
                 Name = team.Name,
                 LeaderId = team.LeaderId,
-                Members = team.Members.Select(x => new MemberEntity() { Id = x.Id, UserId= x.UserId})
+                Members = team.Members.Select(x => new MemberEntity() { Id = x.Id, UserId= x.UserId}).ToList(),
+
             };
         }
 

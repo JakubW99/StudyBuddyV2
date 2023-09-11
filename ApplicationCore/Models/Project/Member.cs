@@ -16,5 +16,9 @@ namespace ApplicationCore.Models.Project
             Id = id;
             UserId = userId;
         }
+
+        public Member() { 
+        }
+
     }
 }

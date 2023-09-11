@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
         public int LeaderId { get; set; }
-        public IEnumerable<MemberEntity> Members { get; set; }
+        public List<MemberEntity> Members { get; set; }
     }
 }

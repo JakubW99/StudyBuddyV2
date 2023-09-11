@@ -26,7 +26,7 @@ namespace Infrastructure
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-                "DATA SOURCE=DESKTOP-F09P8H4\\SQLEXPRESS;DATABASE=Study;Integrated Security=true;TrustServerCertificate=True");
+                "Server=(localdb)\\mssqllocaldb;Database=StudyBuddyDB;Trusted_Connection=True;MultipleActiveResultSets=true;");
         }
 
     }

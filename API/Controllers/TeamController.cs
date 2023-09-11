@@ -78,6 +78,14 @@ namespace API.Controllers
             _service.DeleteMemberFromTeam(userId, teamId);
             return Ok();
         }
-      
+
+        [HttpPost]
+        [Route("{teamId}/{userId}")]
+        public ActionResult AddMemberToTeam([FromRoute] int teamId, [FromRoute] int userId)
+        {
+            _service.AddMemberToTeam(teamId);
+            return Ok();
+        }
+
     }
 }
