@@ -39,7 +39,7 @@ namespace API.Configuration
                 .AddEntityFrameworkStores<StudyBuddyDbContext>()
                 .AddDefaultTokenProviders();
         }
-
+    
         public static void ConfigureJWT(this IServiceCollection services, JwtSettings jwtSettings)
         {
             services.AddAuthorization(opt =>

@@ -17,7 +17,7 @@ namespace API.Controllers
     {
         private ITeamService _service;
         private StudyBuddyDbContext _context;
-        public TeamController(ITeamService service, StudyBuddyDbContext context) 
+        public TeamController(ITeamService service, StudyBuddyDbContext context)
         {
             _service = service;
             _context = context;
@@ -39,7 +39,7 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Post(TeamDto teamDto)
         {
-         
+
             var team = new Team()
             {
                 Name = teamDto.Name,
@@ -60,20 +60,20 @@ namespace API.Controllers
                 LeaderId = teamDto.LeaderId,
                 Members = teamDto.Members.Select(x => new Member(0, x.UserId))
             };
-            _service.UpdateTeam(team,id);
+            _service.UpdateTeam(team, id);
             return Created("", team);
         }
         [HttpDelete]
         [Route("{id}")]
 
-        public void DeleteTeam(int id) 
+        public void DeleteTeam(int id)
         {
             _service.DeleteTeam(id);
         }
         [Authorize]
         [HttpDelete]
         [Route("{teamId}/{userId}")]
-        public ActionResult DeleteUserFromTeam([FromRoute] int teamId, [FromRoute] int userId) 
+        public ActionResult DeleteUserFromTeam([FromRoute] int teamId, [FromRoute] int userId)
         {
             _service.DeleteMemberFromTeam(userId, teamId);
             return Ok();
@@ -84,6 +84,14 @@ namespace API.Controllers
         public ActionResult AddMemberToTeam([FromRoute] int teamId, [FromRoute] int userId)
         {
             _service.AddMemberToTeam(teamId);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("AddRole/{userId}/{roleName}")]
+        public async Task<ActionResult> AddRoleToUser([FromRoute] int userId, [FromRoute] string roleName)
+        {
+            await _service.AddRoleToUserAsync(userId, roleName);
             return Ok();
         }
 

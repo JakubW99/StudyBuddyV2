@@ -1,4 +1,7 @@
-﻿namespace API.Configuration
+﻿using Infrastructure.EF.Entities;
+using Microsoft.AspNetCore.Identity;
+
+namespace API.Configuration
 {
     public class JwtSettings
     {
@@ -15,6 +18,19 @@
         public JwtSettings(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+        private async Task InitializeRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<UserRole>>();
+            if (!await roleManager.RoleExistsAsync("Leader"))
+            {
+                await roleManager.CreateAsync(new UserRole { Name = "Leader" });
+            }
+
+            if (!await roleManager.RoleExistsAsync("Member"))
+            {
+                await roleManager.CreateAsync(new UserRole { Name = "Member" });
+            }
         }
     }
 }
