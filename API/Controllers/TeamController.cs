@@ -39,13 +39,18 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Post(TeamDto teamDto)
         {
+            var members = teamDto.Members.Select(x => new Member(x.UserId, "MEMBER")).ToList();
+            members.Add(new Member(teamDto.LeaderId, "LEADER"));
 
             var team = new Team()
             {
                 Name = teamDto.Name,
                 LeaderId = teamDto.LeaderId,
-                Members = teamDto.Members.Select(x => new Member(0, x.UserId))
+                Members = members
+
+
             };
+
             _service.AddTeam(team);
             return Created("", team);
         }
@@ -58,7 +63,7 @@ namespace API.Controllers
             {
                 Name = teamDto.Name,
                 LeaderId = teamDto.LeaderId,
-                Members = teamDto.Members.Select(x => new Member(0, x.UserId))
+                Members = teamDto.Members.Select(x => new Member(x.UserId,"MEMBER"))
             };
             _service.UpdateTeam(team, id);
             return Created("", team);
@@ -80,10 +85,10 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("{teamId}/{userId}")]
-        public ActionResult AddMemberToTeam([FromRoute] int teamId, [FromRoute] int userId)
+        [Route("{teamId}/{userId}/{role}")]
+        public ActionResult AddMemberToTeam([FromRoute] int teamId, [FromRoute] int userId, [FromRoute] string role)
         {
-            _service.AddMemberToTeam(teamId);
+            _service.AddMemberToTeam(teamId,userId, role);
             return Ok();
         }
 

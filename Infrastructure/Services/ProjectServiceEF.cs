@@ -29,7 +29,7 @@ namespace Infrastructure.Services
                 Id = project.Team.Id,
                 Name = project.Team.Name,
                 LeaderId= project.Team.LeaderId,
-                Members = project.Team.Members.Select(m => new MemberEntity() { Id = m.Id , UserId= m.UserId}).ToList()
+                Members = project.Team.Members.Select(m => new MemberEntity() { UserId= m.UserId}).ToList()
               
             };
             _context.Projects.Add(entity);

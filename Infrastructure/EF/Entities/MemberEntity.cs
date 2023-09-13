@@ -11,5 +11,6 @@ namespace Infrastructure.EF.Entities
         public int Id { get; set; }
         public int UserId { get; set; }
         public int TeamEntityId { get; internal set; }
+        public string Role { get; set; }
     }
 }

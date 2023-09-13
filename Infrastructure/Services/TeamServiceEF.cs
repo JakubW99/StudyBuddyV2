@@ -32,7 +32,7 @@ namespace Infrastructure.Services
                 Id = team.Id,
                 Name = team.Name,
                 LeaderId = team.LeaderId,
-                Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, UserId = m.UserId}).ToList()
+                Members = team.Members.Select(m => new MemberEntity() {  UserId = m.UserId, Role = m.Role}).ToList()
             };
             _context.Teams.Add(teamEntity);
             _context.SaveChanges();
@@ -45,7 +45,7 @@ namespace Infrastructure.Services
        
             findTeam.Name = team.Name;
             findTeam.LeaderId = team.LeaderId;
-            findTeam.Members = team.Members.Select(m => new MemberEntity() { Id = m.Id, UserId = m.UserId }).ToList();
+            findTeam.Members = team.Members.Select(m => new MemberEntity() { UserId = m.UserId }).ToList();
            
             _context.SaveChanges();
             return team;
@@ -89,7 +89,7 @@ namespace Infrastructure.Services
             return Mappers.Mapper.FromEntityToTeam(team);
         }
 
-        public void AddMemberToTeam(int id)
+        public void AddMemberToTeam( int id , int teamid, string role)
         {
             var team = _context.Teams.Include(x => x.Members).FirstOrDefault(x => x.Id == id);
             if (team == null || team.Members == null) return;
@@ -98,6 +98,7 @@ namespace Infrastructure.Services
             {
                 UserId = id,
                 TeamEntityId = team.Id,
+                Role = role
             };
             team.Members.Add(memberAdd);
            _context.SaveChanges();

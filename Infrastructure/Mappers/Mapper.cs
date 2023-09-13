@@ -24,7 +24,7 @@ namespace Infrastructure.Mappers
                 Id = team.Id,
                 Name = team.Name,
                 LeaderId = team.LeaderId,
-                Members = team.Members.Select(x => new MemberEntity() { Id = x.Id, UserId= x.UserId}).ToList(),
+                Members = team.Members.Select(x => new MemberEntity() { UserId= x.UserId}).ToList(),
 
             };
         }
@@ -45,7 +45,7 @@ namespace Infrastructure.Mappers
                 Id = entity.Id,
                 Name = entity.Name,
                 LeaderId = entity.LeaderId,
-               Members = entity.Members.Select(x=> new Member(x.Id,x.UserId))
+               Members = entity.Members.Select(x=> new Member(x.UserId, "LEADER"))
              };
         }
         public static IEnumerable<ProgrammingLanguage> FromEntityToProgrammingLanguages(IEnumerable<ProgrammingLanguageEntity> entities)

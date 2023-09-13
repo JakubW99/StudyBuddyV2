@@ -8,13 +8,15 @@ namespace ApplicationCore.Models.Project
 {
     public class Member
     {
-        public int Id { get; set; }
+ 
         public int UserId { get; set; }
 
-        public Member(int id, int userId)
+        public string Role { get; set; }
+
+        public Member(int userId, string role)
         {
-            Id = id;
             UserId = userId;
+            Role = role;
         }
 
         public Member() { 

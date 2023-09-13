@@ -52,6 +52,8 @@ namespace API.Controllers
 
         private string CreateToken(UserEntity user)
         {
+
+     
             return new JwtBuilder()
             .WithAlgorithm(new HMACSHA256Algorithm())
                 .WithSecret(Encoding.UTF8.GetBytes(_jwtSettings.Secret))

@@ -19,7 +19,7 @@ namespace ApplicationCore.Inferfaces
         }
 
      
-        public void AddMemberToTeam(int userId, int teamId)
+        public void AddMemberToTeam( int teamId,int userId, string role)
         {
             var team = _repository.FindById(teamId);
                 
