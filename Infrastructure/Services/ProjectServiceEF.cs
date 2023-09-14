@@ -43,7 +43,7 @@ namespace Infrastructure.Services
 
         public void DeleteProject(int id)
         {
-           var projectToDelete =  _context.Projects.Find(id);
+           var projectToDelete =  _context.Projects.Include(l => l.Languages).Where(x=> x.Id == id).FirstOrDefault();
             if(projectToDelete != null)
             _context.Projects.Remove(projectToDelete);
             _context.SaveChanges();

@@ -9,6 +9,7 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace API.Controllers
@@ -69,9 +70,17 @@ namespace API.Controllers
         [Authorize]
         [HttpDelete]
         [Route("{id}")]
-        public void DeleteProject(int id) 
+        public ActionResult DeleteProject(int id) 
         {
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var project = _context.Projects.Include(x=> x.Team).Where(x => x.Id == id).FirstOrDefault();
+
+            if (Convert.ToInt32(user) != project.Team.Id)
+            {
+                return Unauthorized("Not a team leader "); // or Forbidden()
+            }
             _service.DeleteProject(id);
+            return Ok();
         }
         [Authorize]
         [HttpPut]
