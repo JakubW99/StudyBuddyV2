@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace API
 {
@@ -33,7 +34,11 @@ namespace API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddScoped<IProjectService, ProjectServiceEF>();
             builder.Services.AddScoped<ITeamService, TeamServiceEF>();
-
+            
+                // omitted for clarity
+           builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+            builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -68,7 +73,7 @@ namespace API
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Quiz API",
+                    Title = "Student Projects API",
                 });
             });
             var app = builder.Build();

@@ -1,6 +1,7 @@
 
 ﻿using API.Authentication;
 using API.Configuration;
+using API.Dto;
 using ApplicationCore.Models;
 using Infrastructure.EF.Entities;
 using JWT.Algorithms;
@@ -62,6 +63,7 @@ namespace API.Controllers
                 .AddClaim(JwtRegisteredClaimNames.Email, user.Email)
                 .AddClaim(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(5).ToUnixTimeSeconds())
                 .AddClaim(JwtRegisteredClaimNames.Jti, Guid.NewGuid())
+                .AddClaim(JwtRegisteredClaimNames.Sub, user.Id)
                 .Audience(_jwtSettings.Audience)
                 .Issuer(_jwtSettings.Issuer)
                 .Encode();

@@ -15,6 +15,6 @@ namespace ApplicationCore.Models.Project
         public string Name { get; set; }
         public int LeaderId { get; set; }
         public IEnumerable<Member> Members { get; set; }
-       
+        public bool IsOpenTeam { get; set; } = true;
     }
 }

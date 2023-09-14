@@ -1,5 +1,6 @@
 ﻿using API.Dto;
 using ApplicationCore.Inferfaces;
+using ApplicationCore.Models;
 using ApplicationCore.Models.Project;
 using Infrastructure;
 using Infrastructure.EF.Entities;
@@ -8,6 +9,7 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -22,33 +24,47 @@ namespace API.Controllers
             _context = context;
             _service = service;
         }
-      //  [Authorize]
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
             return Ok(_service.FindAllProjects());
         }
-        [Authorize]
+      
         [HttpGet]
         [Route("{id}")]
         public Project GetProjectById(int id)
         {
             return _service.FindProjectById(id);
         }
-       // [Authorize]
+        [Authorize]
         [HttpPost]
-        public void AddProject([FromBody] ProjectDto project) 
+        public ActionResult AddProject([FromBody] ProjectDto project) 
         {
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var team = _context.Teams.Where(x => x.Id == project.TeamId).FirstOrDefault();
+            
+                if (Convert.ToInt32(user) != team.LeaderId)
+                {
+                    return Unauthorized("Not a team leader "); // or Forbidden()
+                }
+               
             var entity = new ProjectEntity();
-            var team = _context.Teams.Find(project.TeamId);
+           
             entity.Id = 0;
            entity.Languages = project.Languages.Select(x=>Mapper.FromDtoToLanguage(x)).ToList();
             entity.PlannedEndDate = project.PlannedEndDate;
             entity.DeadlineDate = project.DeadlineDate;
             entity.Team = team;
             entity.Topic = project.Topic;
+            entity.Difficulty = project.Difficulty;
+            entity.RepositoryLink = project.RepositoryLink;
+            entity.IsFinished = false;
+            entity.Description = project.Description;
+
             _context.Projects.Add(entity);
             _context.SaveChanges();
+            return Created("", project);
         }
         [Authorize]
         [HttpDelete]
@@ -57,11 +73,19 @@ namespace API.Controllers
         {
             _service.DeleteProject(id);
         }
+        [Authorize]
         [HttpPut]
         [Route("{id}")]
         public ActionResult UpdateProject(Project project,[FromRoute] int id)
         {
-          _service.UpdateProject(project, id);
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var team = _context.Teams.Where(x => x.Id == project.Team.Id).FirstOrDefault();
+
+            if (Convert.ToInt32(user) != team.LeaderId)
+            {
+                return Unauthorized("Not a team leader "); // or Forbidden()
+            }
+            _service.UpdateProject(project, id);
             return Created("", project);
         }
     }

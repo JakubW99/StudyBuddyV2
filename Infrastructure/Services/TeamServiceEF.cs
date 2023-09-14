@@ -32,7 +32,8 @@ namespace Infrastructure.Services
                 Id = team.Id,
                 Name = team.Name,
                 LeaderId = team.LeaderId,
-                Members = team.Members.Select(m => new MemberEntity() {  UserId = m.UserId, Role = m.Role}).ToList()
+                Members = team.Members.Select(m => new MemberEntity() {  UserId = m.UserId, Role = m.Role}).ToList(),
+                IsOpenTeam = team.IsOpenTeam
             };
             _context.Teams.Add(teamEntity);
             _context.SaveChanges();
@@ -45,8 +46,8 @@ namespace Infrastructure.Services
        
             findTeam.Name = team.Name;
             findTeam.LeaderId = team.LeaderId;
-            findTeam.Members = team.Members.Select(m => new MemberEntity() { UserId = m.UserId }).ToList();
-           
+            findTeam.Members = team.Members.Select(m => new MemberEntity() { UserId = m.UserId, Role = m.Role}).ToList();
+            findTeam.IsOpenTeam= team.IsOpenTeam;
             _context.SaveChanges();
             return team;
         }
@@ -85,7 +86,7 @@ namespace Infrastructure.Services
 
         public Team? FindTeamById(int id)
         {
-            var team = _context.Teams.Find(id);
+            var team = _context.Teams.Include(m => m.Members).FirstOrDefault(x=> x.Id == id);
             return Mappers.Mapper.FromEntityToTeam(team);
         }
 
@@ -93,7 +94,7 @@ namespace Infrastructure.Services
         {
             var team = _context.Teams.Include(x => x.Members).FirstOrDefault(x => x.Id == id);
             if (team == null || team.Members == null) return;
-
+           
             var memberAdd = new MemberEntity
             {
                 UserId = id,

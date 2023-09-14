@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBuddyDbContext))]
-    [Migration("20230913130512_StuddyBuddyv2")]
-    partial class StuddyBuddyv2
+    [Migration("20230913183830_study")]
+    partial class study
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,8 +83,22 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DeadlineDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("PlannedEndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RepositoryLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");

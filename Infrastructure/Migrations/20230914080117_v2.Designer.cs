@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBuddyDbContext))]
-    [Migration("20230907111857_intial")]
-    partial class intial
+    [Migration("20230914080117_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,11 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("TeamEntityId")
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamEntityId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -79,8 +83,22 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DeadlineDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("PlannedEndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RepositoryLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -103,6 +121,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsOpenTeam")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LeaderId")
                         .HasColumnType("int");
@@ -321,7 +342,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.EF.Entities.TeamEntity", null)
                         .WithMany("Members")
-                        .HasForeignKey("TeamEntityId");
+                        .HasForeignKey("TeamEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Infrastructure.EF.Entities.ProgrammingLanguageEntity", b =>

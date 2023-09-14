@@ -80,8 +80,22 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DeadlineDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("PlannedEndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RepositoryLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -104,6 +118,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsOpenTeam")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LeaderId")
                         .HasColumnType("int");

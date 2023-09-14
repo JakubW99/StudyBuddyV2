@@ -1,4 +1,5 @@
 ﻿using Infrastructure.EF.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,8 +13,10 @@ namespace Infrastructure
 {
     public class StudyBuddyDbContext : IdentityDbContext<UserEntity, UserRole, int>
     {
-        public StudyBuddyDbContext(DbContextOptions<StudyBuddyDbContext> options) : base(options)
+    
+        public StudyBuddyDbContext(DbContextOptions<StudyBuddyDbContext> options ) : base(options)
         {
+            
         }
 
         public DbSet<UserEntity> Users { get; set; }
@@ -26,7 +29,7 @@ namespace Infrastructure
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(
-                "Server=(localdb)\\mssqllocaldb;Database=StudyBuddyDB;Trusted_Connection=True;MultipleActiveResultSets=true;");
+                 "Server=(localdb)\\mssqllocaldb;Database=Std;Trusted_Connection=True;MultipleActiveResultSets=true;");
         }
 
     }

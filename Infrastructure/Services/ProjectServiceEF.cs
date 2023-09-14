@@ -32,6 +32,10 @@ namespace Infrastructure.Services
                 Members = project.Team.Members.Select(m => new MemberEntity() { UserId= m.UserId}).ToList()
               
             };
+            entity.IsFinished = false;
+            entity.RepositoryLink = project.RepositoryLink;
+            entity.Difficulty = project.Difficulty;
+            entity.Description = project.Description;
             _context.Projects.Add(entity);
             _context.SaveChanges();
             return project;
@@ -73,19 +77,33 @@ namespace Infrastructure.Services
             var findProject = _context.Projects
                .AsNoTracking()
                .Include(t => t.Team)
+               .ThenInclude(m => m.Members)
                .Include(p => p.Languages)
                .FirstOrDefault(e => e.Id == id);
-            if(findProject != null)
+            if (findProject != null)
             {
-               var prjct = Mappers.Mapper.FromEntityToProject(findProject);
+                //    if(project.IsFinished == true && findProject.RepositoryLink == null)
+                //    {
+                //        return null;
+                //    }
+
+                var prjct = Mappers.Mapper.FromEntityToProject(findProject);
                 prjct.DeadlineDate = project.DeadlineDate;
                 prjct.Topic = project.Topic;
                 prjct.Languages = project.Languages;
                 prjct.PlannedEndDate = project.PlannedEndDate;
                 prjct.Team = project.Team;
+                prjct.IsFinished = project.IsFinished;
+                prjct.RepositoryLink = project.RepositoryLink;
+                prjct.Description = project.Description;
+                prjct.Difficulty = project.Difficulty;
+               
+                findProject = Mapper.FromProjectToEntity(prjct);
+                _context.Entry(findProject).State = EntityState.Modified;
                 _context.SaveChanges();
                 return prjct;
             }
+           
             return null;
             
         }

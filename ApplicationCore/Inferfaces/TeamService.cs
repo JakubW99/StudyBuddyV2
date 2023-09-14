@@ -67,6 +67,7 @@ namespace ApplicationCore.Inferfaces
             findTeam.Name = Team.Name;
             findTeam.Members = Team.Members;
             findTeam.LeaderId = Team.LeaderId;
+            findTeam.IsOpenTeam = Team.IsOpenTeam;
             return findTeam;
         }
     }
