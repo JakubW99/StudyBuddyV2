@@ -82,10 +82,10 @@ namespace Infrastructure.Services
                .FirstOrDefault(e => e.Id == id);
             if (findProject != null)
             {
-                //    if(project.IsFinished == true && findProject.RepositoryLink == null)
-                //    {
-                //        return null;
-                //    }
+                if (project.IsFinished == true && findProject.RepositoryLink == null)
+                {
+                    return null;
+                }
 
                 var prjct = Mappers.Mapper.FromEntityToProject(findProject);
                 prjct.DeadlineDate = project.DeadlineDate;
