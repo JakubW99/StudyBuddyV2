@@ -12,5 +12,14 @@ namespace Infrastructure.EF.Entities
         public int UserId { get; set; }
         public int TeamEntityId { get; internal set; }
         public string Role { get; set; }
+        public MemberEntity(int userId, string role)
+        {
+            UserId = userId;
+            Role = role;
+        }
+        public MemberEntity()
+        {
+
+        }
     }
 }

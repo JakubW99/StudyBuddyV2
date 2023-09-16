@@ -35,6 +35,7 @@ namespace Infrastructure.Services
                 Members = team.Members.Select(m => new MemberEntity() {  UserId = m.UserId, Role = m.Role}).ToList(),
                 IsOpenTeam = team.IsOpenTeam
             };
+            
             _context.Teams.Add(teamEntity);
             _context.SaveChanges();
             return team;

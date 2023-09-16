@@ -75,7 +75,7 @@ namespace API.Controllers
     {
         var userExists = await userManager.FindByNameAsync(model.Username);
         if (userExists != null)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
         UserEntity user = new UserEntity()
         {
@@ -93,8 +93,8 @@ namespace API.Controllers
         {
             await userManager.AddToRoleAsync(user, UserRole.User);
         }
-        if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            if (!result.Succeeded)
+                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again. Password must contain an uppercase, lowercase, number character and special character" });
 
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }
